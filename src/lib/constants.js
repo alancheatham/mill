@@ -1,0 +1,5 @@
+export const WHITE = 'W'
+export const BLACK = 'B'
+export const PLACE = 'PLACE'
+export const REMOVE = 'REMOVE'
+export const MOVE = 'MOVE'
