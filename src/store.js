@@ -4,6 +4,8 @@ import Vuex from "vuex";
 import {
     WHITE,
     BLACK,
+    YELLOW,
+    RED,
     PLACE
 } from './lib/constants'
 
@@ -17,7 +19,7 @@ const initialState = () => ({
     phase: PLACE,
     board: Array(24).fill(null).map(() => ({
         color: null,
-        highlighted: false
+        highlighted: ''
     }))
 })
 
@@ -57,7 +59,7 @@ export default new Vuex.Store({
             const newBoard = [...state.board]
             newBoard[location] = {
                 color: state.colorToMove,
-                highlighted: false
+                highlighted: ''
             }
 
             if (state.colorToMove === BLACK) {
@@ -67,11 +69,11 @@ export default new Vuex.Store({
             commit('setBoard', newBoard)
             commit('toggleMove')
         },
-        highlightPiece ({ commit, state }, location) {
+        highlightPiece ({ commit, state }, { location, color }) {
             const newBoard = [...state.board]
             newBoard[location] = {
                 color: newBoard[location].color,
-                highlighted: true
+                highlighted: color
             }
 
             commit('setBoard', newBoard)
@@ -79,14 +81,14 @@ export default new Vuex.Store({
         unhighlightAllPieces ({ commit, state }) {
             const newBoard = state.board.map(x => ({
                 color: x.color,
-                highlighted: false
+                highlighted: ''
             }))
 
             commit('setBoard', newBoard)
         },
         removePiece ({ commit, state }, { location, destroy }) {
             const newBoard = [...state.board]
-            newBoard[location] = { color: null, highlighted: false }
+            newBoard[location] = { color: null, highlighted: '' }
 
             if (destroy) {
                 if (state.board[location].color === WHITE) {

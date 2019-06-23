@@ -29,6 +29,10 @@ import { mapActions, mapState } from 'vuex'
 import {
     WHITE,
     BLACK,
+    GREEN,
+    YELLOW,
+    RED,
+    SMALL__BLUE,
     PLACE,
     REMOVE,
     MOVE
@@ -69,9 +73,12 @@ export default {
 
             switch (this.phase) {
                 case PLACE:
-                    if (!this.board[location].color) {
-                        this.addPiece(location)
+                    if (this.board[location].color) {
+                        break
                     }
+
+                    this.addPiece(location)
+
                     if (this.checkForMill(location)) {
                         this.highlightPiecesToRemove()
                         this.setPhase(REMOVE)
@@ -102,12 +109,14 @@ export default {
                 case MOVE:
                     if (this.board[location].color === this.colorToMove) {
                         this.unhighlightAllPieces()
-                        this.highlightPiece(location)
+                        this.highlightMoveablePieces()
+                        this.highlightPiece({ location, color: GREEN })
+                        this.highlightMoveableLocations(location)
                     } else {
                         if (!this.board[location].color) {
                             let highlightedIndex = -1
                             for (let i = 0; i < this.board.length; i++) {
-                                if (this.board[i].highlighted) {
+                                if (this.board[i].highlighted === GREEN) {
                                     highlightedIndex = i
                                 }
                             }
@@ -117,6 +126,7 @@ export default {
                             if (highlightedIndex >= 0 && (this.nextToEmpty(highlightedIndex).indexOf(location) > -1 || flying)) {
                                 this.removePiece({ location: highlightedIndex, destroy: false })
                                 this.addPiece(location)
+                                this.unhighlightAllPieces()
 
                                 if (this.checkForMill(location)) {
                                     this.highlightPiecesToRemove()
@@ -136,14 +146,14 @@ export default {
             let piecesHighlighted = 0
             for (let i = 0; i < this.board.length; i++) {
                 if (this.board[i].color === this.colorToMove && !this.checkForMill(i)) {
-                    this.highlightPiece(i)
+                    this.highlightPiece({ location: i, color: RED })
                     piecesHighlighted++
                 }
             }
             if (piecesHighlighted === 0) {
                 for (let i = 0; i < this.board.length; i++) {
                     if (this.board[i].color === this.colorToMove) {
-                        this.highlightPiece(i)
+                        this.highlightPiece({ location: i, color: RED })
                     }
                 }
             }
@@ -155,12 +165,25 @@ export default {
             for (let i = 0; i < this.board.length; i++) {
                 if ((this.nextToEmpty(i).length > 0 || flying) && this.board[i].color === this.colorToMove) {
                     moveablePiece = true
-                    this.highlightPiece(i)
+                    this.highlightPiece({ location: i, color: YELLOW })
                 }
             }
 
             if (!moveablePiece) {
                 this.winner = this.colorToMove === WHITE ? BLACK : WHITE
+            }
+        },
+        highlightMoveableLocations (location) {
+            let flying = this.colorToMove === WHITE ? this.whitePiecesRemaining < 4 : this.blackPiecesRemaining < 4
+
+            if (flying) {
+                for (let i = 0; i < this.board.length; i++) {
+                    if (!this.board[i].color) {
+                        this.highlightPiece({ location: i, color: SMALL__BLUE })
+                    }
+                }
+            } else {
+                this.nextToEmpty(location).forEach(i => this.highlightPiece({ location: i, color: SMALL__BLUE }))
             }
         },
         checkForMill (location) {
