@@ -9,18 +9,20 @@ import {
 
 Vue.use(Vuex);
 
+const initialState = () => ({
+    colorToMove: WHITE,
+    whitePiecesRemaining: 9,
+    blackPiecesRemaining: 9,
+    piecesPlaced: 0,
+    phase: PLACE,
+    board: Array(24).fill(null).map(() => ({
+        color: null,
+        highlighted: false
+    }))
+})
+
 export default new Vuex.Store({
-    state: {
-        colorToMove: 'W',
-        whitePiecesRemaining: 9,
-        blackPiecesRemaining: 9,
-        piecesPlaced: 0,
-        phase: PLACE,
-        board: Array(24).fill(null).map(() => ({
-            color: null,
-            highlighted: false
-        }))
-    },
+    state: initialState(),
     mutations: {
         setPhase (state, phase) {
             state.phase = phase
@@ -39,6 +41,12 @@ export default new Vuex.Store({
         },
         removeBlackPiece (state) {
             state.blackPiecesRemaining--
+        },
+        resetGame (state) {
+            const s = initialState()
+            Object.keys(s).forEach(key => {
+                state[key] = s[key]
+            })
         }
     },
     actions: {
@@ -90,5 +98,8 @@ export default new Vuex.Store({
 
             commit('setBoard', newBoard)
         },
+        resetGame ({ commit }) {
+            commit('resetGame')
+        }
     }
 });

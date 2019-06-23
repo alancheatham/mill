@@ -110,10 +110,10 @@ export default {
 .point
     margin 8px
 
-    &--W
+    &--WHITE
         background silver
 
-    &--B
+    &--BLACK
         background black
 
     &--highlighted

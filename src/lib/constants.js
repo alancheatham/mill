@@ -1,5 +1,5 @@
-export const WHITE = 'W'
-export const BLACK = 'B'
+export const WHITE = 'WHITE'
+export const BLACK = 'BLACK'
 export const PLACE = 'PLACE'
 export const REMOVE = 'REMOVE'
 export const MOVE = 'MOVE'

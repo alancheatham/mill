@@ -16,11 +16,13 @@
             :position="board.slice(16, 24)"
             @click="evt => clicked(2, evt)"
         ></square>
+        <message v-if="winner" :message="`${winner} Wins`" first-button-text="Reset" :first-button-click="resetClick"></message>
     </div>
 </template>
 
 <script>
 import Square from './Square'
+import Message from './Message'
 
 import { mapActions, mapState } from 'vuex'
 
@@ -35,7 +37,8 @@ import {
 export default {
     name: 'board',
     components: {
-        Square
+        Square,
+        Message
     },
     computed: {
         ...mapState([
@@ -47,13 +50,19 @@ export default {
             'blackPiecesRemaining'
         ])
     },
+    data () {
+        return {
+            winner: ''
+        }
+    },
     methods: {
         ...mapActions([
             'setPhase',
             'addPiece',
             'highlightPiece',
             'unhighlightAllPieces',
-            'removePiece'
+            'removePiece',
+            'resetGame'
         ]),
         clicked (square, { position }) {
             const location = square * 8 + position
@@ -81,6 +90,12 @@ export default {
                         } else {
                             this.setPhase(MOVE)
                             this.highlightMoveablePieces()
+                        }
+
+                        if (this.whitePiecesRemaining < 3) {
+                            this.winner = BLACK
+                        } else if (this.blackPiecesRemaining < 3) {
+                            this.winner = WHITE
                         }
                     }
                     break
@@ -114,7 +129,7 @@ export default {
                     }
                     break
                 default:
-                    return
+                    break
             }
         },
         highlightPiecesToRemove () {
@@ -135,11 +150,17 @@ export default {
         },
         highlightMoveablePieces () {
             let flying = this.colorToMove === WHITE ? this.whitePiecesRemaining < 4 : this.blackPiecesRemaining < 4
+            let moveablePiece = false
 
             for (let i = 0; i < this.board.length; i++) {
                 if ((this.nextToEmpty(i).length > 0 || flying) && this.board[i].color === this.colorToMove) {
+                    moveablePiece = true
                     this.highlightPiece(i)
                 }
+            }
+
+            if (!moveablePiece) {
+                this.winner = this.colorToMove === WHITE ? BLACK : WHITE
             }
         },
         checkForMill (location) {
@@ -278,6 +299,10 @@ export default {
         },
         nextToEmpty (location) {
             return this.isNextTo(location).filter(x => !this.board[x].color)
+        },
+        resetClick () {
+            this.winner = ''
+            this.resetGame()
         }
     }
 }
