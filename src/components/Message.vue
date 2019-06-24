@@ -1,13 +1,23 @@
 <template>
-    <div
-        class="message"
-    >
+    <div class="message">
         <div class="message__scrim">
             <div class="message__box">
                 <span class="message__message">{{ message }}</span>
                 <div class="message__buttons">
-                    <button v-if="firstButtonText" class="message__button" @click="firstButtonClick">{{ firstButtonText }}</button>
-                    <button v-if="secondButtonText" class="message__button" @click="secondButtonClick">{{ secondButtonText }}</button>
+                    <button
+                        v-if="firstButtonText"
+                        class="message__button"
+                        @click="firstButtonClick"
+                    >
+                        {{ firstButtonText }}
+                    </button>
+                    <button
+                        v-if="secondButtonText"
+                        class="message__button"
+                        @click="secondButtonClick"
+                    >
+                        {{ secondButtonText }}
+                    </button>
                 </div>
             </div>
         </div>

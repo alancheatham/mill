@@ -1,67 +1,56 @@
 <template>
-    <div
-        class="square"
-    >
+    <div class="square">
         <div class="row">
-            <point class="point"
-                   :class="[
-                        `point--${position[0].color}`,
-                        `point--${position[0].highlighted}`
-                    ]"
-                   @click="$emit('click', { position: 0 })"
+            <point
+                class="point"
+                :class="[`point--${position[0].color}`, `point--${position[0].highlighted}`]"
+                @click="$emit('click', { position: 0 })"
             ></point>
-            <point class="point"
-                   :class="[
-                        `point--${position[1].color}`,
-                        `point--${position[1].highlighted}`
-                    ]"
-                   @click="$emit('click', { position: 1 })">
+            <point
+                class="point"
+                :class="[`point--${position[1].color}`, `point--${position[1].highlighted}`]"
+                @click="$emit('click', { position: 1 })"
+            >
             </point>
-            <point class="point"
-                   :class="[
-                        `point--${position[2].color}`,
-                        `point--${position[2].highlighted}`
-                    ]"
-                   @click="$emit('click', { position: 2 })">
+            <point
+                class="point"
+                :class="[`point--${position[2].color}`, `point--${position[2].highlighted}`]"
+                @click="$emit('click', { position: 2 })"
+            >
             </point>
         </div>
         <div class="row">
-            <point class="point"
-                   :class="[
-                        `point--${position[7].color}`,
-                        `point--${position[7].highlighted}`
-                    ]"
-                   @click="$emit('click', { position: 7 })">
+            <point
+                class="point"
+                :class="[`point--${position[7].color}`, `point--${position[7].highlighted}`]"
+                @click="$emit('click', { position: 7 })"
+            >
             </point>
-            <point class="point"
-                   :class="[
-                        `point--${position[3].color}`,
-                        `point--${position[3].highlighted}`
-                    ]"
-                   @click="$emit('click', { position: 3 })">
+            <point
+                class="point"
+                :class="[`point--${position[3].color}`, `point--${position[3].highlighted}`]"
+                @click="$emit('click', { position: 3 })"
+            >
             </point>
         </div>
         <div class="row">
-            <point class="point"
-                   :class="[
-                        `point--${position[6].color}`,
-                        `point--${position[6].highlighted}`
-                    ]"
-                   @click="$emit('click', { position: 6 })">
+            <point
+                class="point"
+                :class="[`point--${position[6].color}`, `point--${position[6].highlighted}`]"
+                @click="$emit('click', { position: 6 })"
+            >
             </point>
-            <point class="point"
-                   :class="[
-                        `point--${position[5].color}`,
-                        `point--${position[5].highlighted}`
-                    ]"
-                   @click="$emit('click', { position: 5 })">
+            <point
+                class="point"
+                :class="[`point--${position[5].color}`, `point--${position[5].highlighted}`]"
+                @click="$emit('click', { position: 5 })"
+            >
             </point>
-            <point class="point"
-                   :class="[
-                        `point--${position[4].color}`,
-                        `point--${position[4].highlighted}`
-                    ]"
-                   @click="$emit('click', { position: 4 })">
+            <point
+                class="point"
+                :class="[`point--${position[4].color}`, `point--${position[4].highlighted}`]"
+                @click="$emit('click', { position: 4 })"
+            >
             </point>
         </div>
     </div>

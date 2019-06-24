@@ -1,8 +1,5 @@
 <template>
-    <div
-        class="point"
-        @click="$emit('click', $event)"
-    ></div>
+    <div class="point" @click="$emit('click', $event)"></div>
 </template>
 
 <script>
@@ -11,5 +8,4 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-</style>
+<style lang="stylus" scoped></style>

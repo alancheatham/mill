@@ -16,7 +16,12 @@
             :position="board.slice(16, 24)"
             @click="evt => clicked(2, evt)"
         ></square>
-        <message v-if="winner" :message="`${winner} Wins`" first-button-text="Reset" :first-button-click="resetClick"></message>
+        <message
+            v-if="winner"
+            :message="`${winner} Wins`"
+            first-button-text="Reset"
+            :first-button-click="resetClick"
+        ></message>
     </div>
 </template>
 
@@ -54,7 +59,7 @@ export default {
             'blackPiecesRemaining'
         ])
     },
-    data () {
+    data() {
         return {
             winner: ''
         }
@@ -68,7 +73,7 @@ export default {
             'removePiece',
             'resetGame'
         ]),
-        clicked (square, { position }) {
+        clicked(square, { position }) {
             const location = square * 8 + position
 
             switch (this.phase) {
@@ -121,10 +126,20 @@ export default {
                                 }
                             }
 
-                            let flying = this.colorToMove === WHITE ? this.whitePiecesRemaining < 4 : this.blackPiecesRemaining < 4
+                            let flying =
+                                this.colorToMove === WHITE
+                                    ? this.whitePiecesRemaining < 4
+                                    : this.blackPiecesRemaining < 4
 
-                            if (highlightedIndex >= 0 && (this.nextToEmpty(highlightedIndex).indexOf(location) > -1 || flying)) {
-                                this.removePiece({ location: highlightedIndex, destroy: false })
+                            if (
+                                highlightedIndex >= 0 &&
+                                (this.nextToEmpty(highlightedIndex).indexOf(location) > -1 ||
+                                    flying)
+                            ) {
+                                this.removePiece({
+                                    location: highlightedIndex,
+                                    destroy: false
+                                })
                                 this.addPiece(location)
                                 this.unhighlightAllPieces()
 
@@ -142,7 +157,7 @@ export default {
                     break
             }
         },
-        highlightPiecesToRemove () {
+        highlightPiecesToRemove() {
             let piecesHighlighted = 0
             for (let i = 0; i < this.board.length; i++) {
                 if (this.board[i].color === this.colorToMove && !this.checkForMill(i)) {
@@ -158,12 +173,18 @@ export default {
                 }
             }
         },
-        highlightMoveablePieces () {
-            let flying = this.colorToMove === WHITE ? this.whitePiecesRemaining < 4 : this.blackPiecesRemaining < 4
+        highlightMoveablePieces() {
+            let flying =
+                this.colorToMove === WHITE
+                    ? this.whitePiecesRemaining < 4
+                    : this.blackPiecesRemaining < 4
             let moveablePiece = false
 
             for (let i = 0; i < this.board.length; i++) {
-                if ((this.nextToEmpty(i).length > 0 || flying) && this.board[i].color === this.colorToMove) {
+                if (
+                    (this.nextToEmpty(i).length > 0 || flying) &&
+                    this.board[i].color === this.colorToMove
+                ) {
                     moveablePiece = true
                     this.highlightPiece({ location: i, color: YELLOW })
                 }
@@ -173,8 +194,11 @@ export default {
                 this.winner = this.colorToMove === WHITE ? BLACK : WHITE
             }
         },
-        highlightMoveableLocations (location) {
-            let flying = this.colorToMove === WHITE ? this.whitePiecesRemaining < 4 : this.blackPiecesRemaining < 4
+        highlightMoveableLocations(location) {
+            let flying =
+                this.colorToMove === WHITE
+                    ? this.whitePiecesRemaining < 4
+                    : this.blackPiecesRemaining < 4
 
             if (flying) {
                 for (let i = 0; i < this.board.length; i++) {
@@ -183,10 +207,12 @@ export default {
                     }
                 }
             } else {
-                this.nextToEmpty(location).forEach(i => this.highlightPiece({ location: i, color: SMALL__BLUE }))
+                this.nextToEmpty(location).forEach(i =>
+                    this.highlightPiece({ location: i, color: SMALL__BLUE })
+                )
             }
         },
-        checkForMill (location) {
+        checkForMill(location) {
             switch (location) {
                 case 0:
                     return this.checkBigTopMill() || this.checkBigLeftMill()
@@ -240,58 +266,125 @@ export default {
                     return false
             }
         },
-        checkBigTopMill () {
-            return this.board[0].color && this.board[0].color && this.board[0].color === this.board[1].color && this.board[0].color === this.board[2].color
+        checkBigTopMill() {
+            return (
+                this.board[0].color &&
+                this.board[0].color &&
+                this.board[0].color === this.board[1].color &&
+                this.board[0].color === this.board[2].color
+            )
         },
-        checkBigRightMill () {
-            return this.board[2].color && this.board[2].color === this.board[3].color && this.board[2].color === this.board[4].color
+        checkBigRightMill() {
+            return (
+                this.board[2].color &&
+                this.board[2].color === this.board[3].color &&
+                this.board[2].color === this.board[4].color
+            )
         },
-        checkBigBottomMill () {
-            return this.board[4].color && this.board[4].color === this.board[5].color && this.board[4].color === this.board[6].color
+        checkBigBottomMill() {
+            return (
+                this.board[4].color &&
+                this.board[4].color === this.board[5].color &&
+                this.board[4].color === this.board[6].color
+            )
         },
-        checkBigLeftMill () {
-            return this.board[6].color && this.board[6].color === this.board[7].color && this.board[6].color === this.board[0].color
+        checkBigLeftMill() {
+            return (
+                this.board[6].color &&
+                this.board[6].color === this.board[7].color &&
+                this.board[6].color === this.board[0].color
+            )
         },
-        checkMediumTopMill () {
-            return this.board[8].color && this.board[8].color === this.board[9].color && this.board[8].color === this.board[10].color
+        checkMediumTopMill() {
+            return (
+                this.board[8].color &&
+                this.board[8].color === this.board[9].color &&
+                this.board[8].color === this.board[10].color
+            )
         },
-        checkMediumRightMill () {
-            return this.board[10].color && this.board[10].color === this.board[11].color && this.board[10].color === this.board[12].color
+        checkMediumRightMill() {
+            return (
+                this.board[10].color &&
+                this.board[10].color === this.board[11].color &&
+                this.board[10].color === this.board[12].color
+            )
         },
-        checkMediumBottomMill () {
-            return this.board[12].color && this.board[12].color === this.board[13].color && this.board[12].color === this.board[14].color
+        checkMediumBottomMill() {
+            return (
+                this.board[12].color &&
+                this.board[12].color === this.board[13].color &&
+                this.board[12].color === this.board[14].color
+            )
         },
-        checkMediumLeftMill () {
-            return this.board[14].color && this.board[14].color === this.board[15].color && this.board[14].color === this.board[8].color
+        checkMediumLeftMill() {
+            return (
+                this.board[14].color &&
+                this.board[14].color === this.board[15].color &&
+                this.board[14].color === this.board[8].color
+            )
         },
-        checkSmallTopMill () {
-            return this.board[16].color && this.board[16].color === this.board[17].color && this.board[16].color === this.board[18].color
+        checkSmallTopMill() {
+            return (
+                this.board[16].color &&
+                this.board[16].color === this.board[17].color &&
+                this.board[16].color === this.board[18].color
+            )
         },
-        checkSmallRightMill () {
-            return this.board[18].color && this.board[18].color === this.board[19].color && this.board[18].color === this.board[20].color
+        checkSmallRightMill() {
+            return (
+                this.board[18].color &&
+                this.board[18].color === this.board[19].color &&
+                this.board[18].color === this.board[20].color
+            )
         },
-        checkSmallBottomMill () {
-            return this.board[20].color && this.board[20].color === this.board[21].color && this.board[20].color === this.board[22].color
+        checkSmallBottomMill() {
+            return (
+                this.board[20].color &&
+                this.board[20].color === this.board[21].color &&
+                this.board[20].color === this.board[22].color
+            )
         },
-        checkSmallLeftMill () {
-            return this.board[22].color && this.board[22].color === this.board[23].color && this.board[22].color === this.board[16].color
+        checkSmallLeftMill() {
+            return (
+                this.board[22].color &&
+                this.board[22].color === this.board[23].color &&
+                this.board[22].color === this.board[16].color
+            )
         },
-        checkTopMiddleMill () {
-            return this.board[1].color && this.board[1].color === this.board[9].color && this.board[1].color === this.board[17].color
+        checkTopMiddleMill() {
+            return (
+                this.board[1].color &&
+                this.board[1].color === this.board[9].color &&
+                this.board[1].color === this.board[17].color
+            )
         },
-        checkRightMiddleMill () {
-            return this.board[3].color && this.board[3].color === this.board[11].color && this.board[3].color === this.board[19].color
+        checkRightMiddleMill() {
+            return (
+                this.board[3].color &&
+                this.board[3].color === this.board[11].color &&
+                this.board[3].color === this.board[19].color
+            )
         },
-        checkBottomMiddleMill () {
-            return this.board[5].color && this.board[5].color === this.board[13].color && this.board[5].color === this.board[21].color
+        checkBottomMiddleMill() {
+            return (
+                this.board[5].color &&
+                this.board[5].color === this.board[13].color &&
+                this.board[5].color === this.board[21].color
+            )
         },
-        checkLeftMiddleMill () {
-            return this.board[7].color && this.board[7].color === this.board[15].color && this.board[7].color === this.board[23].color
+        checkLeftMiddleMill() {
+            return (
+                this.board[7].color &&
+                this.board[7].color === this.board[15].color &&
+                this.board[7].color === this.board[23].color
+            )
         },
-        isNextTo (location) {
-            const locations = Array(24).fill(null).map(() => {
-                return []
-            })
+        isNextTo(location) {
+            const locations = Array(24)
+                .fill(null)
+                .map(() => {
+                    return []
+                })
 
             for (let i = 0; i < locations.length; i++) {
                 if (i % 8 === 0) {
@@ -303,27 +396,24 @@ export default {
                         locations[i].push(i + 1, i - 1)
                     }
 
-                    if (i % 8 === 1
-                        || i % 8 === 3
-                        || i % 8 === 5
-                        || i % 8 === 7) {
-                            if (i < 8) {
-                                locations[i].push(i + 8)
-                            } else if (i < 16) {
-                                locations[i].push(i + 8, i - 8)
-                            } else {
-                                locations[i].push(i - 8)
-                            }
+                    if (i % 8 === 1 || i % 8 === 3 || i % 8 === 5 || i % 8 === 7) {
+                        if (i < 8) {
+                            locations[i].push(i + 8)
+                        } else if (i < 16) {
+                            locations[i].push(i + 8, i - 8)
+                        } else {
+                            locations[i].push(i - 8)
                         }
+                    }
                 }
             }
 
             return locations[location]
         },
-        nextToEmpty (location) {
+        nextToEmpty(location) {
             return this.isNextTo(location).filter(x => !this.board[x].color)
         },
-        resetClick () {
+        resetClick() {
             this.winner = ''
             this.resetGame()
         }

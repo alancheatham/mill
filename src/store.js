@@ -1,15 +1,9 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue'
+import Vuex from 'vuex'
 
-import {
-    WHITE,
-    BLACK,
-    YELLOW,
-    RED,
-    PLACE
-} from './lib/constants'
+import { WHITE, BLACK, PLACE } from './lib/constants'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 const initialState = () => ({
     colorToMove: WHITE,
@@ -17,34 +11,36 @@ const initialState = () => ({
     blackPiecesRemaining: 9,
     piecesPlaced: 0,
     phase: PLACE,
-    board: Array(24).fill(null).map(() => ({
-        color: null,
-        highlighted: ''
-    }))
+    board: Array(24)
+        .fill(null)
+        .map(() => ({
+            color: null,
+            highlighted: ''
+        }))
 })
 
 export default new Vuex.Store({
     state: initialState(),
     mutations: {
-        setPhase (state, phase) {
+        setPhase(state, phase) {
             state.phase = phase
         },
-        toggleMove (state) {
+        toggleMove(state) {
             state.colorToMove = state.colorToMove === WHITE ? BLACK : WHITE
         },
-        setBoard (state, board) {
+        setBoard(state, board) {
             state.board = board
         },
-        playPiece (state) {
+        playPiece(state) {
             state.piecesPlaced++
         },
-        removeWhitePiece (state) {
+        removeWhitePiece(state) {
             state.whitePiecesRemaining--
         },
-        removeBlackPiece (state) {
+        removeBlackPiece(state) {
             state.blackPiecesRemaining--
         },
-        resetGame (state) {
+        resetGame(state) {
             const s = initialState()
             Object.keys(s).forEach(key => {
                 state[key] = s[key]
@@ -52,10 +48,10 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        setPhase ({ commit }, phase) {
+        setPhase({ commit }, phase) {
             commit('setPhase', phase)
         },
-        addPiece ({ commit, state }, location) {
+        addPiece({ commit, state }, location) {
             const newBoard = [...state.board]
             newBoard[location] = {
                 color: state.colorToMove,
@@ -69,7 +65,7 @@ export default new Vuex.Store({
             commit('setBoard', newBoard)
             commit('toggleMove')
         },
-        highlightPiece ({ commit, state }, { location, color }) {
+        highlightPiece({ commit, state }, { location, color }) {
             const newBoard = [...state.board]
             newBoard[location] = {
                 color: newBoard[location].color,
@@ -78,7 +74,7 @@ export default new Vuex.Store({
 
             commit('setBoard', newBoard)
         },
-        unhighlightAllPieces ({ commit, state }) {
+        unhighlightAllPieces({ commit, state }) {
             const newBoard = state.board.map(x => ({
                 color: x.color,
                 highlighted: ''
@@ -86,7 +82,7 @@ export default new Vuex.Store({
 
             commit('setBoard', newBoard)
         },
-        removePiece ({ commit, state }, { location, destroy }) {
+        removePiece({ commit, state }, { location, destroy }) {
             const newBoard = [...state.board]
             newBoard[location] = { color: null, highlighted: '' }
 
@@ -100,8 +96,8 @@ export default new Vuex.Store({
 
             commit('setBoard', newBoard)
         },
-        resetGame ({ commit }) {
+        resetGame({ commit }) {
             commit('resetGame')
         }
     }
-});
+})
